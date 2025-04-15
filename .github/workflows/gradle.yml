@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "assign4-act1" ]
+    branches: [ "assign4-act1-checkstyle" ]
   pull_request:
-    branches: [ "assign4-act1" ]
+    branches: [ "assign4-act1-checkstyle" ]
 
 jobs:
   build:
@@ -36,11 +36,11 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build -x test
 
-    # - name: all tests
-    #   run: ./gradlew test
+    - name: all tests
+      run: ./gradlew test
     
-    - name: fast tests
-      run: ./gradlew testFast
+    # - name: fast tests
+    #   run: ./gradlew testFast
 
     # - name: slow tests
     #   run: ./gradlew testSlow
@@ -74,3 +74,35 @@ jobs:
   #   # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
   #   - name: Generate and submit dependency graph
   #     uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: Run Only testFast
+        run: ./gradlew testFast
+
+  # Task-5: Adding checkstyles
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: "21"
+          distribution: "temurin"
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain

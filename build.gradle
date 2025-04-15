@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'checkstyle'
 }
 
 version = '0.0.1-SNAPSHOT'
@@ -43,3 +44,6 @@ includeTestsMatching 'edu.asu.assign4.rest.grocery.controllers.GroceryApi2Applic
 }
 }
 
+checkstyle {
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
